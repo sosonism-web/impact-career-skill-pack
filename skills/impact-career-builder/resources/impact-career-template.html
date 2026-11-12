@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>임팩트 경력기술서 & 커리어 확장 리포트</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Pretendard', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #ebedf0;
+      color: #111111;
+      line-height: 1.85;
+      letter-spacing: -0.01em;
+      padding: 72px 20px 50px;
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 상단 플로팅 다운로드 바 (인쇄 시 숨김) */
+    .action-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: #0f2942; color: #ffffff;
+      padding: 14px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+    }
+    .action-bar span { font-size: 14.5px; font-weight: 500; }
+    .btn-group { display: flex; gap: 10px; }
+    .download-btn {
+      background: #ffffff; color: #0f2942;
+      border: none; padding: 9px 18px; border-radius: 4px;
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+      white-space: nowrap;
+    }
+    .download-btn:hover { background: #e2e8f0; }
+
+    /* A4 페이퍼 컨테이너 (정확한 A4 210mm x 297mm 규격 고정) */
+    #paper-container { width: 210mm; margin: 0 auto; }
+    .page {
+      background: #ffffff;
+      width: 210mm;
+      height: 297mm;
+      padding: 22mm 22mm;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .page-break { page-break-before: always; }
+
+    /* 상단 헤더 (좌우 충돌로 인한 어색한 줄바꿈을 방지하는 1단 수직 정렬) */
+    .doc-header {
+      border-bottom: 2px solid #0f2942;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .doc-header h1 {
+      font-size: 26px; font-weight: 800; color: #0f2942;
+      line-height: 1.3; margin-bottom: 10px; letter-spacing: -0.02em;
+    }
+    .meta-row {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 6px 14px; font-size: 14px; color: #222222; line-height: 1.5;
+    }
+    .meta-item {
+      white-space: nowrap;
+    }
+    .meta-item strong { color: #0f2942; font-weight: 700; }
+    .meta-divider { color: #cbd5e1; font-size: 12px; }
+
+    /* 핵심 슬로건 문구 */
+    .core-slogan {
+      font-size: 15px; font-weight: 600; color: #0f2942;
+      margin-bottom: 28px; padding-left: 14px;
+      border-left: 3px solid #0f2942; line-height: 1.65;
+    }
+
+    /* 섹션 대제목 (깔끔한 언더라인 스타일) */
+    h2 {
+      font-size: 16.5px; font-weight: 800; color: #0f2942;
+      border-bottom: 1px solid #0f2942;
+      padding-bottom: 6px;
+      margin: 30px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    /* 프로젝트 소제목 (제목과 역할이 부딪혀 깨지지 않도록 상하 배치) */
+    .project-header {
+      margin: 22px 0 12px;
+    }
+    .project-header h3 {
+      font-size: 15.5px; font-weight: 700; color: #111111; line-height: 1.4;
+    }
+    .project-header .project-role {
+      font-size: 13.5px; font-weight: 600; color: #0f2942; margin-top: 3px;
+    }
+
+    /* 소분류 타이틀 */
+    .sub-title {
+      font-size: 14px; font-weight: 700; color: #0f2942;
+      margin: 14px 0 6px; text-decoration: underline; text-underline-offset: 4px;
+    }
+
+    /* 리스트 */
+    ul { padding-left: 20px; margin-bottom: 18px; }
+    li {
+      font-size: 14px; color: #111111;
+      margin-bottom: 9px; line-height: 1.8;
+    }
+    li strong { color: #0f2942; font-weight: 700; }
+
+    /* 표 (구분 열은 텍스트에 맞게 좁고 줄바꿈 없이, 세부 내용 열은 넓고 시원하게) */
+    table {
+      width: 100%; border-collapse: collapse;
+      margin: 16px 0 28px; font-size: 13.5px;
+      border-top: 2px solid #0f2942;
+      border-bottom: 1px solid #0f2942;
+    }
+    th, td {
+      border-bottom: 1px solid #d1d5db;
+      padding: 14px 18px;
+      text-align: left; vertical-align: top;
+      line-height: 1.75;
+    }
+    th {
+      width: 1%;
+      white-space: nowrap;
+      color: #0f2942; font-weight: 700;
+      padding-right: 24px;
+      border-right: 1px solid #e5e7eb;
+    }
+    td {
+      width: 99%;
+      color: #111111;
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      body { background: none; padding: 0; }
+      .action-bar { display: none !important; }
+      .page { box-shadow: none; margin: 0; width: 210mm; height: 297mm; padding: 20mm 22mm; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 다운로드 액션 바 -->
+  <div class="action-bar">
+    <span>임팩트 경력기술서 & 커리어 확장 리포트가 완성되었습니다.</span>
+    <div class="btn-group">
+      <button class="download-btn" onclick="downloadPDF()">PDF 파일로 바로 다운로드</button>
+      <button class="download-btn" onclick="window.print()">인쇄 / PDF 저장</button>
+    </div>
+  </div>
+
+  <div id="paper-container">
+    <!-- [Page 1] 문제 해결 중심 임팩트 경력기술서 -->
+    <div class="page">
+      <div class="doc-header">
+        <h1>{{이름_또는_닉네임}}</h1>
+        <div class="meta-row">
+          <span class="meta-item"><strong>소속 및 연차:</strong> {{소속_및_연차_15자이내}}</span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item"><strong>직무 재정의:</strong> {{시장_표준_직무명_1~2개}}</span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item"><strong>문서 구분:</strong> 임팩트 경력기술서</span>
+        </div>
+      </div>
+
+      <div class="core-slogan">
+        "{{사용자의_핵심_문제해결_방식을_보여주는_단정하고_신뢰감_있는_한_줄_역량_정의}}"
+      </div>
+
+      <h2>Executive Summary (핵심 역량 요약)</h2>
+      <ul>
+        <li><strong>문제 정의 및 기획력</strong> : {{현장의_모호한_과제를_구체적인_실행_과제로_번역해_낸_역량_요약_개조식}}</li>
+        <li><strong>실행 및 제약 돌파력</strong> : {{한정된_자원이나_복잡한_이해관계를_조율해_끝까지_결과를_만들어_낸_역량_요약_개조식}}</li>
+        <li><strong>성과 및 자산화 역량</strong> : {{단발성_이벤트를_넘어_현장의_정성적_변화나_재현_가능한_프로세스_레퍼런스를_남긴_역량_요약_개조식}}</li>
+      </ul>
+
+      <h2>Work Experience (주요 문제 해결 및 성과 이력)</h2>
+      
+      <div class="project-header">
+        <h3>1. {{대표_프로젝트_명칭}}</h3>
+        <div class="project-role">담당 역할 및 범위 : {{실제_수행한_구체적_역할_명시}}</div>
+      </div>
+
+      <div class="sub-title">해결하고자 한 문제 (Context & Problem)</div>
+      <ul>
+        <li>{{기존_현장이나_조직이_겪던_구조적_한계_막막함_정의_1}}</li>
+        <li>{{해결해야_했던_핵심_과제와_맥락적_난이도_정의_2}}</li>
+      </ul>
+
+      <div class="sub-title">주도적 실행과 돌파 과정 (Action & Solution)</div>
+      <ul>
+        <li><strong>{{핵심_행동_1_키워드}}</strong> : {{사용자가_실제로_판단하고_발로_뛴_구체적인_해결_방식_1}}</li>
+        <li><strong>{{핵심_행동_2_키워드}}</strong> : {{이해관계자_설득_프로세스_개선_맞춤형_지원_등_구체적인_해결_방식_2}}</li>
+        <li><strong>{{핵심_행동_3_키워드}}</strong> : {{난관이나_제약을_돌파하기_위해_도입한_실행_전략_3}}</li>
+      </ul>
+
+      <div class="sub-title">만들어낸 변화와 증명 (Impact & Evidence)</div>
+      <ul>
+        <li><strong>정량·정성적 변곡점</strong> : {{수치가_있다면_수치와_맥락_제시_수치가_없거나_작다면_참여자_태도_변화_신뢰_구축_첫_선례_확보_등_실질적_변화_명시}}</li>
+        <li><strong>조직 및 생태계 자산화</strong> : {{이_프로젝트를_통해_조직_내부나_현장에_남긴_매뉴얼_아카이브_데이터_후속_기반_등_지속_가능한_결과물}}</li>
+        <li><strong>증빙 가능 자료 (Evidence)</strong> : {{오픈배지나_포트폴리오로_연결할_수_있도록_사용자가_챙겨두면_좋을_실제_산출물_제안}}</li>
+      </ul>
+    </div>
+
+    <!-- [Page 2] 나의 임팩트 발자국 회고 -->
+    <div class="page page-break">
+      <div class="doc-header">
+        <h1>임팩트 발자국 회고 & 성과 다각화 분석</h1>
+        <div class="meta-row">
+          <span class="meta-item"><strong>작성 대상:</strong> {{이름_또는_닉네임}}</span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item"><strong>활용 목적:</strong> 핵심 역량 진단 및 다면적 가치(개인·현장·조직) 해석</span>
+        </div>
+      </div>
+
+      <h2>1. 올해 내가 현장에서 증명한 '체화된 문제해결력'</h2>
+      <ul>
+        <li><strong>업무 나열을 넘어선 진짜 실력</strong> : {{단순_업무_처리를_넘어_어떤_비즈니스_문제해결력을_발휘한_과정인지_짚어주는_멘토의_해석}}</li>
+        <li><strong>정량 지표 너머의 가치</strong> : {{엑셀_숫자만으로는_보이지_않는_사용자의_고군분투와_그로_인해_만들어진_변곡점의_가치_격려}}</li>
+      </ul>
+
+      <h2>2. 세 가지 시선으로 다시 읽는 나의 성과 (Impact Alignment)</h2>
+      <table>
+        <tr>
+          <th>개인의 성장</th>
+          <td>
+            • {{직접_부딪히며_체득한_나만의_문제_해결_무기_1}}<br>
+            • {{발견한_고유한_기획_실행_역량_2}}
+          </td>
+        </tr>
+        <tr>
+          <th>사회적·현장 가치</th>
+          <td>
+            • {{나의_개입으로_인해_현장_참여자_동료에게_일어난_실질적_변화_1}}<br>
+            • {{생태계나_공동체에_남긴_정성적_변곡점_2}}
+          </td>
+        </tr>
+        <tr>
+          <th>조직 기여</th>
+          <td>
+            • {{조직의_목표_달성_신뢰도_제고_또는_내부_시행착오_감소에_기여한_바_1}}<br>
+            • {{지속_활용_가능한_조직_인프라_프로세스_아카이브_구축_기여_2}}
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- [Page 3] 미래지향적 커리어 확장 로드맵 -->
+    <div class="page page-break">
+      <div class="doc-header">
+        <h1>미래지향적 커리어 확장 로드맵</h1>
+        <div class="meta-row">
+          <span class="meta-item"><strong>작성 대상:</strong> {{이름_또는_닉네임}}</span>
+          <span class="meta-divider">|</span>
+          <span class="meta-item"><strong>활용 목적:</strong> 시장·산업 기준 커리어 확장성 및 스케일업 전략 제안</span>
+        </div>
+      </div>
+
+      <h2>3. 미래지향적 커리어 확장 로드맵 (Next Step & Market Expansion)</h2>
+      <table>
+        <tr>
+          <th>직무·산업 확장성</th>
+          <td>
+            • <strong>호환 가능한 시장 직무</strong> : {{원티드_링크드인_기준_매칭되는_일반_비즈니스_직무_2~3개와_연결_근거}}<br>
+            • <strong>연결 가능한 인접 산업군</strong> : {{현재_도메인을_넘어_이_문제해결력이_높게_평가받는_인접_산업_섹터_2~3곳_제안}}
+          </td>
+        </tr>
+        <tr>
+          <th>내년의 스케일업 도전</th>
+          <td>
+            • <strong>{{추천_도전_과제_1_제목}}</strong> : {{올해의_경험을_바탕으로_내년에_현_조직에서_한_단계_구조화_고도화해볼_구체적_프로젝트_아이디어}}<br>
+            • <strong>{{추천_도전_과제_2_제목}}</strong> : {{정성적_성과를_데이터화하거나_파트너십_연중_콘텐츠_수익모델로_확장해볼_구체적_아이디어}}
+          </td>
+        </tr>
+        <tr>
+          <th>몸값을 높이는 무기 보완</th>
+          <td>
+            • <strong>지금 갈무리할 핵심 증거물(Evidence)</strong> : {{올해_만든_산출물_중_포트폴리오용으로_별도_보관해야_할_구체적_자료_1~2개}}<br>
+            • <strong>더하면 강력한 시너지 역량</strong> : {{현재_강점에_결합했을_때_대체_불가능한_실무자가_될_수_있는_역량_데이터_툴_지식_1가지_추천}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      const element = document.getElementById('paper-container');
+      const pages = element.querySelectorAll('.page');
+      pages.forEach(p => { p.style.marginBottom = '0'; p.style.boxShadow = 'none'; });
+      const opt = {
+        margin:       0,
+        filename:     '{{이름_또는_닉네임}}_임팩트_경력기술서_및_커리어_확장_리포트.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: ['css', 'legacy'] }
+      };
+      html2pdf().set(opt).from(element).save().then(() => {
+        pages.forEach(p => { p.style.marginBottom = '28px'; p.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)'; });
+      });
+    }
+  </script>
+</body>
+</html>

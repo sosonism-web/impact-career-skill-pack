@@ -1,11 +1,8 @@
-# 🎁 Impact Career Builder (임팩트 경력기술서 & 커리어 확장 리포트 스킬셋)
+# 🎁 Impact Career Builder (A4 3-Page 임팩트 경력기술서 & 커리어 확장 리포트 스킬셋)
 
 > **"엑셀 시트 몇 줄의 숫자에 다 담기지 않는 당신의 체화된 문제해결력을 증명합니다."**
 
-이 저장소는 정성적 지표가 많거나 정량 지표가 미미해 자신의 커리어를 증명하기 막막한 **임팩트 생태계(소셜벤처, 비영리, CSR/ESG, 로컬, 중간지원조직 등) 실무자**를 위한 AI 커리어 인터뷰 및 3 Page 경력기술서 & 커리어 확장 리포트 생성 스킬(Skill)입니다.
-
-스킬은 대표적인 프로젝트 1개를 선택해 인터뷰 형식으로 답변하는 구조로 설계되어 있으며, 이에 따라 산출물 역시 1개의 프로젝트를 중심으로 추출됩니다.
-만약 1개 이상의 프로젝트를 통합 정리한 경력기술서 산출을 희망하실 시, 개별 인터뷰 후 산출된 각각의 경력기술서 PDF를 LLM 채팅창에 붙여넣은 뒤 통합 파일 생성을 요청하시면 됩니다. 
+이 저장소는 정성적 지표가 많거나 정량 지표가 미미해 자신의 커리어를 증명하기 막막한 **임팩트 생태계(소셜벤처, 비영리, CSR/ESG, 로컬, 중간지원조직 등) 실무자**를 위한 AI 커리어 인터뷰 및 **A4 3-Page 경력기술서 & 커리어 확장 리포트 생성 스킬(Skill)**입니다.
 
 ---
 
@@ -24,7 +21,7 @@ impact-career-skill-pack/
         ├── references/
         │   └── career-mapping-framework.md         # 시장 직무 호환성 및 인접 산업 확장 매핑 데이터
         └── resources/
-            └── impact-career-template.html         # PDF 원클릭 다운로드 버튼이 내장된 A4 2-Page HTML 템플릿
+            └── impact-career-template.html         # PDF 원클릭 다운로드 버튼이 내장된 A4 3-Page HTML 템플릿
 ```
 
 ---
@@ -41,3 +38,4 @@ impact-career-skill-pack/
 
 ### 방법 2. 일반 ChatGPT / Claude 웹 채팅창에서 사용하기
 - [`STANDALONE_PROMPT.md`](./STANDALONE_PROMPT.md) 파일 안의 프롬프트 전문을 복사하여 ChatGPT나 Claude 대화창에 붙여넣으면 즉시 인터뷰와 PDF 다운로드 페이퍼 생성이 진행됩니다.
+
